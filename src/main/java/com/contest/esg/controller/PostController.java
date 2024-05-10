@@ -32,8 +32,8 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public CommonResponse<Post> findByPostId(@Parameter(name = "id", description = "게시글 번호", in = ParameterIn.PATH) @PathVariable("id") String id) {
-        return CommonResponse.success(postService.findByPostId(id));
+    public CommonResponse<Post> findById(@Parameter(name = "id", description = "게시글 번호", in = ParameterIn.PATH) @PathVariable("id") String id) {
+        return CommonResponse.success(postService.findById(id));
     }
 
     @GetMapping("/all")
@@ -41,12 +41,12 @@ public class PostController {
         return CommonResponse.success(postService.findAll());
     }
 
-    @GetMapping("/{companyName}")
+    @GetMapping("/company/{companyName}")
     public CommonResponse<List<Post>> findByCompanyName(@Parameter(name = "companyName", description = "회사명", in = ParameterIn.PATH) @PathVariable("companyName") String companyName) {
         return CommonResponse.success(postService.findByCompanyName(companyName));
     }
 
-    @PostMapping("/{productName}")
+    @GetMapping("/product/{productName}")
     public CommonResponse<List<Post>> findByProductName(@Parameter(name = "productName", description = "제품명", in = ParameterIn.PATH) @PathVariable("productName") String productName) {
         return CommonResponse.success(postService.findByProductName(productName));
     }

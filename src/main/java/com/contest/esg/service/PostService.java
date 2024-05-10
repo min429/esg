@@ -31,7 +31,7 @@ public class PostService {
         postMongoRepository.deleteById(id);
     }
 
-    public Post findByPostId(String id) {
+    public Post findById(String id) {
         return postMongoRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Post not found"));
     }
@@ -49,21 +49,20 @@ public class PostService {
     }
 
     public Post setPostId(Post post) {
-        PostSequence sequence = postSequenceRepository.findById("postId").orElse(null);
+        List<PostSequence> sequences = postSequenceRepository.findAll();
+        PostSequence sequence;
 
-        if (sequence == null) {
+        if (sequences == null || sequences.isEmpty()) {
             sequence = PostSequence.builder()
                     .postId(1L)
                     .build();
-            postSequenceRepository.save(sequence);
-            post.setPostId(sequence.getPostId());
-            return post;
+        } else {
+            sequence = sequences.get(0);
+            sequence.setPostId(sequence.getPostId() + 1);
         }
-
-        Long nextPostId = sequence.getPostId();
-        post.setPostId(nextPostId);
-        sequence.setPostId(nextPostId + 1L);
         postSequenceRepository.save(sequence);
+        post.setPostId(sequence.getPostId());
+
         return post;
     }
 }
